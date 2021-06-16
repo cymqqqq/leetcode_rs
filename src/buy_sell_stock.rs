@@ -35,6 +35,15 @@ pub fn buy_and_sell_stock(nums: Vec<i32>) -> i32 {
     }
     profit
 }
+pub fn buy_and_sell_stock2(nums: Vec<i32>) -> i32 {
+    let mut max = 0;
+    for i in 1..nums.len() {
+        if nums[i] > nums[i - 1] {
+            max += nums[i] - nums[i - 1]
+        }
+    }
+    max
+}
 fn main() {
     let price = vec![7,1,5,3,6,4];
     println!("{:?}", buy_and_sell_stock(price));
