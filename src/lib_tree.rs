@@ -206,6 +206,43 @@ pub fn path_sum(root: TreeLink, sum: i32) -> bool {
     root.path_sum(sum)
 }
 ///////////////////
+trait Preorder {
+    fn preorder(&self, nums: &mut Vec<i32>);
+}
+impl Preorder for TreeLink {
+    fn preorder(&self, nums: &mut Vec<i32>) {
+        if let Some(node) = self {
+            let node = node.borrow();
+            nums.push(node.val);
+            node.left.preorder(nums);
+            node.right.preorder(nums);
+        }
+    }
+}
+pub fn preorder_traver(root: TreeLink) -> Vec<i32> {
+    let mut res = vec![];
+    root.preorder(&mut res);
+    res
+}
+///////////////////
+trait Postorder {
+    fn postorder(&self, nums: &mut Vec<i32>);
+}
+impl Postorder for TreeLink {
+    fn postorder(&self, nums: &mut Vec<i32>) {
+        if let Some(node) = self {
+            let node = node.borrow();
+            node.left.postorder(nums);
+            node.right.postorder(nums);
+            nums.push(node.val);
+        }
+    }
+}
+pub fn postorder(root: TreeLink) -> Vec<i32> {
+    let mut res = vec![];
+    root.postorder(&mut res);
+    res
+}
 fn main() {
     let x = tree!(1, None, tree!(2, tree!(3), None));
     let q = tree!(
