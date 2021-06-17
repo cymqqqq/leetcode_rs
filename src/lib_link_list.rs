@@ -67,3 +67,14 @@ pub fn remove_ele(mut head: ListLink, val: i32) -> ListLink {
     }
     head
 }
+////////reverse linklist
+pub fn reverse_list(head: ListLink) -> ListLink {
+    let mut p = head;
+    let mut prev = None;
+    while let Some(mut node) = p {
+        p = node.next;
+        node.next = prev;
+        prev = Some(node)
+    }
+    prev
+}
