@@ -55,3 +55,15 @@ pub fn delete_dup(mut head: ListLink) -> ListLink {
     }
     head
 }
+/////////remove linklist element
+pub fn remove_ele(mut head: ListLink, val: i32) -> ListLink {
+    let mut p = &mut head;
+    while p.is_some() {
+        if p.as_ref().unwrap().val == val {
+            *p = p.take().unwrap().next.take();
+        } else {
+            p = &mut p.as_mut().unwrap().next;
+        }
+    }
+    head
+}
