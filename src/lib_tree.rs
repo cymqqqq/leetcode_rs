@@ -30,6 +30,18 @@ pub trait TreeCreator {
 }
 impl TreeCreator for TreeLink {}
 /////////////////////
+//invert binary tree
+pub fn invert_bt(root: TreeLink) -> TreeLink {
+    if let Some(node) = &root {
+        let mut node = node.borrow_mut();
+        let left = node.left.take();
+        let right = node.right.take();
+        node.right = invert_bt(left);
+        node.left = invert_bt(right);
+    }
+    root
+}
+////////////////////
 pub trait Symmetric {
     fn is_symmetric(&self) -> bool;
     fn is_mirror(&self, right: &TreeLink) -> bool;
