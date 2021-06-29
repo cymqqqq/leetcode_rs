@@ -42,6 +42,28 @@ pub fn invert_bt(root: TreeLink) -> TreeLink {
     root
 }
 ////////////////////
+///lower common ancestor for binary tree
+pub fn lowest_common_ancestor(mut root: TreeLink, p: TreeLink, q: TreeLink) -> TreeLink {
+    let p_val = p.unwrap().borrow().val;
+    let q_val = q.unwrap().borrow().val;
+    while let Some(node) = root.clone() {
+        let mut node = node.borrow_mut();
+        let val = node.val;
+        if val > p_val && val > q_val {
+            root = node.left.take();
+            continue;
+        }
+        if val < p_val && val < q_val {
+            root = node.right.take();
+            continue;
+        }
+        node.left.take();
+        node.right.take();
+        break;
+    }
+    root
+}
+////////////////////
 pub trait Symmetric {
     fn is_symmetric(&self) -> bool;
     fn is_mirror(&self, right: &TreeLink) -> bool;
