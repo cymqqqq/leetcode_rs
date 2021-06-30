@@ -34,6 +34,30 @@ pub fn shortest_distance(words: Vec<String>, word1: String, word2: String) -> i3
     }
     min
 }
+/*
+strobogrammatic number
+*/
+use std::collections::HashMap;
+pub fn is_strobogrammatic(nums: String) -> bool {
+    let map: HashMap<char, char> =
+    vec![('0', '0'), ('1', '1'),('6', '9'),
+    ('8', '8'), ('9', '6')].into_iter().collect();
+    let num: Vec<char> = nums.chars().collect();
+    println!("{:?}", num);
+    let n = num.len();
+    for i in 0..num.len() {
+        if let Some(&x) = map.get(&num[n - 1 - i]) {
+            if num[i] != x {
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
+    true
+}
+
+/////////
 fn main() {
     let words: Vec<String> = vec!["practice", "makes", "perfect", "coding", "makes"];
     let word1 = "practice".to_string();
