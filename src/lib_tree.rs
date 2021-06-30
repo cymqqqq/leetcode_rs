@@ -334,6 +334,59 @@ pub fn binary_tree_path(root: TreeLink) -> Vec<String> {
     root
 }
 ////////////////
+/*
+Closest Binary Search Tree Value
+Given a non-empty binary search tree and a target value, find the value in the BST that is closest to the target.
+
+Note:
+
+Given target value is a floating point.
+You are guaranteed to have only one unique value in the BST that is closest to the target.
+Example:
+
+Input: root = [4,2,5,1,3], target = 3.714286
+
+    4
+   / \
+  2   5
+ / \
+1   3
+
+Output: 4
+*/
+pub trait Closet {
+    fn search(&self, target: f64) -> i32;
+    fn preorder(link: &TreeLink, diff: &mut f64, res: &mut i32, target: f64);
+}
+impl Closet for TreeLink {
+    fn search(&self, target: f64) -> i32 {
+        let mut diff = std::f64::MAX;
+        let mut res = 0;
+        preorder(&self, &mut diff, &mut res, target);
+        res
+    }
+    fn preorder(link: &TreeLink, diff: &mut f64, res: &mut f32, target: f64) {
+        if let Some(node) = link {
+            let node = node.borrow();
+            let val = node.val as f64;
+            let delta = (val - target).abs();
+            if delta < *diff {
+                *diff = delta;
+                *res = node.val;
+            }
+            if target < val {
+                preorder(&node.left, diff, res, target);
+            }
+            if target > val {
+                preorder(&node.right, diff, res, target);
+            }
+        }
+    }
+}
+pub fn closet_value(root: TreeLink, target: f64) -> i32 {
+    root.search(target)
+}
+////////////////
 fn main() {
     let x = tree!(1, None, tree!(2, tree!(3), None));
     let q = tree!(
