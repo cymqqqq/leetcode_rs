@@ -277,6 +277,63 @@ pub fn postorder(root: TreeLink) -> Vec<i32> {
     root.postorder(&mut res);
     res
 }
+/*
+Binary Tree Paths
+Given a binary tree, return all root-to-leaf paths.
+
+Note: A leaf is a node with no children.
+
+Example:
+
+Input:
+
+   1
+ /   \
+2     3
+ \
+  5
+
+Output: ["1->2->5", "1->3"]
+
+Explanation: All root-to-leaf paths are: 1->2->5, 1->3
+*/
+pub struct Path {
+    stack: Vec<i32>,
+}
+impl ToString for Path {
+    fn to_string(&self) -> String {
+        let s: Vec<String> = self.stack.iter().map(|i| i.to_string()).collect();
+        s.join("->")
+    }
+}
+pub trait Preorder {
+    fn preorder(&self, path: &mut Path, v: &mut Vec<String>);
+}
+impl Preorder for TreeLink {
+    fn preorder(&self, path: &mut Path, v: &mut Vec<String>) {
+        if let Some(node) = self {
+            let node = node.borrow();
+            path.stack.push(node.val);
+            if node.left.is_none() && node.right.is_none() {
+                v.push(path.to_string());
+            }
+            if node.left.is_none() {
+                node.left.preorder(path, v);
+            }
+            if node.right.is_none() {
+                node.right.preorder(path, v);
+            }
+            path.stack.pop();
+        }
+    }
+}
+pub fn binary_tree_path(root: TreeLink) -> Vec<String> {
+    let mut path = Path { stack: vec![] };
+    let mut res = vec![];
+    root.preorder(&mut path, &mut res);
+    root
+}
+////////////////
 fn main() {
     let x = tree!(1, None, tree!(2, tree!(3), None));
     let q = tree!(
