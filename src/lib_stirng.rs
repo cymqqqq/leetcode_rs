@@ -56,8 +56,69 @@ pub fn is_strobogrammatic(nums: String) -> bool {
     }
     true
 }
+/*
+Word Pattern
+Given a pattern and a string s, find if s follows the same pattern.
 
+Here follow means a full match, such that there is a bijection between a letter in pattern and a non-empty word in s.
+
+ 
+
+Example 1:
+
+Input: pattern = "abba", s = "dog cat cat dog"
+Output: true
+Example 2:
+
+Input: pattern = "abba", s = "dog cat cat fish"
+Output: false
+Example 3:
+
+Input: pattern = "aaaa", s = "dog cat cat dog"
+Output: false
+Example 4:
+
+Input: pattern = "abba", s = "dog dog dog dog"
+Output: false
+ 
+
+Constraints:
+
+1 <= pattern.length <= 300
+pattern contains only lower-case English letters.
+1 <= s.length <= 3000
+s contains only lower-case English letters and spaces ' '.
+s does not contain any leading or trailing spaces.
+All the words in s are separated by a single space.
+*/
 /////////
+use std::collections::HashMap;
+pub fn word_pattern(pattern: String, string: String) -> bool {
+    let chars: Vec<char> = pattern.chars().collect();
+    let strings: Vec<String> = string.split_whitespace().map(|s| s.to_string()).collect();
+    if chars.len() != strings.len() {
+        return false;
+    }
+    let mut hashmap1: HashMap<char, String> = HashMap::new();
+    let mut hashmap2: HashMap<String, char> = HashMap::new();
+    for i in 0..chars.len() {
+        let c = chars[i];
+        let s = strings[i].clone();
+        if let Some(ss) = hashmap1.get(&c) {
+            if *ss != s { return false; }
+        } else {
+            hashmap1.insert(c, s.clone());
+        }
+        if let Some(cc) = hashmap2.get(&s) {
+            if *cc != c { return false; }
+        } else {
+            hashmap2.insert(s.clone(), c);
+        }
+    }
+    true
+}
+////////
+
 fn main() {
     let words: Vec<String> = vec!["practice", "makes", "perfect", "coding", "makes"];
     let word1 = "practice".to_string();
