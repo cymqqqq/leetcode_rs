@@ -118,7 +118,36 @@ pub fn word_pattern(pattern: String, string: String) -> bool {
     true
 }
 ////////
+/*
+Flip Game
+You are playing the following Flip Game with your friend: Given a string that contains only these two characters: + and -, you and your friend take turns to flip two consecutive "++" into "--". The game ends when a person can no longer make a move and therefore the other person will be the winner.
 
+Write a function to compute all possible states of the string after one valid move.
+
+Example:
+
+Input: 
+s = "++++"
+
+Output: 
+[
+  "--++",
+  "+--+",
+  "++--"
+]
+Note: If there is no valid move, return an empty list [].
+*/
+pub fn generate_possible_next_moves(s: String) -> Vec<String> {
+    let mut res: Vec<String> = vec![];
+    let n = s.len();
+    for i in 1..n {
+        if &s[i - 1..=i] == "++" {
+            res.push(format!("{}{}{}", &s[0..i - 1], "--", &s[i + 1..]));
+        }
+    }
+    res
+}
+//////////////
 fn main() {
     let words: Vec<String> = vec!["practice", "makes", "perfect", "coding", "makes"];
     let word1 = "practice".to_string();
