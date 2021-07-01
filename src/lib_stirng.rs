@@ -148,6 +148,10 @@ pub fn generate_possible_next_moves(s: String) -> Vec<String> {
     res
 }
 //////////////
+fn reverse_string(s: &mut Vec<char>) {
+        s.reverse();
+    }
+//////////////
 fn main() {
     let words: Vec<String> = vec!["practice", "makes", "perfect", "coding", "makes"];
     let word1 = "practice".to_string();
