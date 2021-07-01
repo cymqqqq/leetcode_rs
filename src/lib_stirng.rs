@@ -152,6 +152,50 @@ fn reverse_string(s: &mut Vec<char>) {
         s.reverse();
     }
 //////////////
+/*
+Reverse Vowels of a String
+Write a function that takes a string as input and reverse only the vowels of a string.
+
+Example 1:
+
+Input: "hello"
+Output: "holle"
+Example 2:
+
+Input: "leetcode"
+Output: "leotcede"
+Note:
+The vowels does not include the letter "y".
+*/
+pub fn is_vowel(c: char) -> bool {
+    matches!(c, 'a' | 'e' | 'i' | 'o' | 'u'
+    | 'A' | 'E' | 'I' | 'O' | 'U' )
+}
+pub fn reverse_vowels(s: String) -> String {
+    let mut a: Vec<char> = s.chars().collect();
+    let n = a.len();
+    if n == 0 {
+        return "".to_string();
+    }
+    let mut l = 0;
+    let mut r = n - l;
+    while l < r {
+        if is_vowel(a[l]) && is_vowel(a[r]) {
+            a.swap(l, r);
+            l += 1;
+            r -= 1;
+        } else {
+            if !is_vowel(a[l]) {
+                l += 1;
+            }
+            if !is_vowel(a[r]) {
+                r -= 1;
+            }
+        }
+    }
+    a.iter().collect()
+}
+//////////////
 fn main() {
     let words: Vec<String> = vec!["practice", "makes", "perfect", "coding", "makes"];
     let word1 = "practice".to_string();
