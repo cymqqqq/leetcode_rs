@@ -256,6 +256,33 @@ impl Logger {
         true
     }
 }
+/*
+First Unique Character in a String
+Given a string, find the first non-repeating character in it and return its index. If it doesn't exist, return -1.
+
+Examples:
+
+s = "leetcode"
+return 0.
+
+s = "loveleetcode"
+return 2.
+*/
+use std::collections::HashMap;
+pub fn first_unique_char(s: String) -> i32 {
+    let mut hm: HashMap<char, i32> = HashMap::new();
+    for c in s.chars() {
+        let e = hm.entry(c).or_default();
+        *e += 1;
+    }
+    for (i, c) in s.chars().enumerate() {
+        if let Some(1) = hm.get(&c) {
+            return i as i32;
+        }
+    }
+    -1
+}
+///////////
 /////////////
 fn main() {
     let words: Vec<String> = vec!["practice", "makes", "perfect", "coding", "makes"];
