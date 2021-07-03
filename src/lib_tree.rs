@@ -386,6 +386,46 @@ impl Closet for TreeLink {
 pub fn closet_value(root: TreeLink, target: f64) -> i32 {
     root.search(target)
 }
+/*
+Sum of Left Leaves
+Find the sum of all left leaves in a given binary tree.
+
+Example:
+
+    3
+   / \
+  9  20
+    /  \
+   15   7
+
+There are two left leaves in the binary tree, with values 9 and 15 respec
+*/
+pub trait Sumofleftleaves {
+    fn sum_of_left_leaves(&self) -> i32;
+}
+impl Sumofleftleaves for TreeLink {
+    fn sum_of_left_leaves(&self) -> i32 {
+        let mut sum = 0;
+        if let Some(node) = self {
+            let node = node.borrow();
+            let left = &node.left;
+            let right = &node.right;
+            if let Some(left_node) = left {
+                let left_node = left_node.borrow();
+                if left_node.left.is_none() && left_node.right.is_none() {
+                    sum += left_node.val;
+                } else {
+                    sum += sum_of_left_leaves(left);
+                }
+            }
+            sum += sum_of_left_leaves(right);
+        }
+        sum
+    }
+}
+pub fn sum_left(root: TreeLink) -> i32 {
+    root.sum_of_left_leaves()
+}
 ////////////////
 fn main() {
     let x = tree!(1, None, tree!(2, tree!(3), None));
