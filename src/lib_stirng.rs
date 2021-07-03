@@ -381,6 +381,19 @@ pub fn subsequence(s: String, t: String) -> bool {
     i == s.len()
 }
 /////////////
+pub fn read_binary(num: i32) -> Vec<String> {
+    let mut res: Vec<String> = vec![];
+    for i in 0..11 {
+        for j in 0..60 {
+            if i32::count_ones(i) + i32::count_ones(j) == num as u32 {
+                res.push(format!("{}: {:02}", i , j));
+            }
+        }
+    }
+    res
+}
+
+/////////////
 fn main() {
     let words: Vec<String> = vec!["practice", "makes", "perfect", "coding", "makes"];
     let word1 = "practice".to_string();
