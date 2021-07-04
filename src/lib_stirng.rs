@@ -483,6 +483,40 @@ pub fn longest_palindrome(s: String) -> i32 {
         2 * mid + 1
     }
 }
+/*
+Add Strings
+Given two non-negative integers num1 and num2 represented as string, return the sum of num1 and num2.
+
+Note:
+
+The length of both num1 and num2 is < 5100.
+Both num1 and num2 contains only digits 0-9.
+Both num1 and num2 does not contain any leading zero.
+You must not use any built-in BigInteger library or convert the inputs to integer directly.
+
+*/
+pub fn add_strings(str1: String, str2: String) -> String {
+    let s1: Vec<i32> = str1.bytes().map(|x| (x - b'0') as i32).rev().collect();
+    println!("{:?}", s1);
+    let s2: Vec<i32> = str2.bytes().map(|x| (x - b'0') as i32).rev().collect();
+    let carry = 0;
+    let mut i = 0;
+    let mut str3: Vec<char> = vec![];
+    while i < s1.len() || i < s2.len() || carry > 0 {
+        let mut v = 0;
+        if i < s1.len() {
+            v += s1[i];
+        }
+        if i < s2.len() {
+            v += s2[i];
+        }
+        v += carry;
+        str3.push(((v % 10) as u8 + b'0') as char);
+        i += 1;
+    }
+    let res: String = str3.iter().rev().collect();
+    res
+}
 /////////////
 fn main() {
     let words: Vec<String> = vec!["practice", "makes", "perfect", "coding", "makes"];
