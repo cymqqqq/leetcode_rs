@@ -494,6 +494,51 @@ pub fn find_mode(root: TreeLink) -> Vec<i32> {
     });
     modes
 }
+/*
+Minimum Absolute Difference in BST
+Given a binary search tree with non-negative values, find the minimum absolute difference between values of any two nodes.
+
+Example:
+
+Input:
+
+   1
+    \
+     3
+    /
+   2
+
+Output:
+1
+
+Explanation:
+The minimum absolute difference is 1, which is the difference between 2 and 1 (or between 2 and 3).
+
+*/
+pub trait Inorder {
+    fn inorder(&self, prev: &mut Option<i32>, min: &mut i32);
+}
+impl Inorder for TreeLink {
+    fn inorder(&self, prev: &mut Option<i32>, min: &mut i32) {
+        if let Some(node) = self {
+            let node = node.borrow();
+            inorder(&node.left, prev, min);
+            if let Some(prev_val) = prev.as_mut() {
+                *min = (node.val - *prev_val).abs().min(*min);
+                *prev_val = node.val;
+            } else {
+                *prev = Some(node.val);
+            }
+            inorder(&node.right, prev, min);
+        }
+    }
+}
+pub fn get_minimum_difference(root: TreeLink) -> i32 {
+    let mut min = i32::MAX;
+    let mut prev: Option<i32> = None;
+    root.inorder(&mut prev, &mut min);
+    min
+}
 ////////////////
 fn main() {
     let x = tree!(1, None, tree!(2, tree!(3), None));
