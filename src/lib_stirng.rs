@@ -546,6 +546,41 @@ Output: 0
 pub fn count_segments(s: String) -> i32 {
     s.split_whitespace().count() as i32
 }
+/*
+Reverse String II
+Given a string and an integer k, you need to reverse the first k characters for every 2k characters counting from the start of the string. If there are less than k characters left, reverse all of them. If there are less than 2k but greater than or equal to k characters, then reverse the first k characters and left the other as original.
+Example:
+Input: s = "abcdefg", k = 2
+Output: "bacdfeg"
+
+*/
+pub fn rev_k(s: &mut [char], k: usize) -> &[char] {
+    if s.len() <= k {
+        s.reverse();
+    } else {
+        let half = &mut s[0..k];
+        half.reverse();
+    }
+    s
+}
+pub fn reverse_str(s: String, k: i32) -> String {
+    let k: usize = k as usize;
+    let mut s: Vec<char> = s.chars().collect();
+    let n = s.len();
+    let mut i = 0;
+    while i * 2 * k < n {
+        let r = (i + 1) * 2 * k;
+        if r < n {
+            let ss = &mut s[i * 2 * k..r];
+            rev_k(ss, k);
+        } else {
+            let ss = &mut s[i * 2 * k..n];
+            rev_k(ss, k);
+        }
+        i += 1;
+    }
+    s.iter().collect()
+}
 /////////////
 fn main() {
     let words: Vec<String> = vec!["practice", "makes", "perfect", "coding", "makes"];
