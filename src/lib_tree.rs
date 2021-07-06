@@ -426,6 +426,74 @@ impl Sumofleftleaves for TreeLink {
 pub fn sum_left(root: TreeLink) -> i32 {
     root.sum_of_left_leaves()
 }
+/*
+Find Mode in Binary Search Tree
+Given a binary search tree (BST) with duplicates, find all the mode(s) (the most frequently occurred element) in the given BST.
+
+Assume a BST is defined as follows:
+
+The left subtree of a node contains only nodes with keys less than or equal to the node's key.
+The right subtree of a node contains only nodes with keys greater than or equal to the node's key.
+Both the left and right subtrees must also be binary search trees.
+ 
+
+For example:
+Given BST [1,null,2,2],
+
+   1
+    \
+     2
+    /
+   2
+ 
+
+return [2].
+
+Note: If a tree has more than one mode, you can return them in any order.
+
+Follow up: Could you do that without using any extra space? (Assume that the implicit stack space incurred due to recursion does not count).
+*/
+pub trait Inorder {
+    fn inorder(&self, prev: &mut Option<i32>, count: &mut usize, f: &mut impl FnMut(i32, usize));
+}
+impl Inorder for TreeLink {
+    fn inorder(&self, prev: &mut Option<i32>, count: &mut usize, f: &mut impl  FnMut(i32, usize)) {
+        if let Some(node) = self {
+            let node = node.borrow();
+            inorder(&node.left, prev, count, f);
+            if let Some(prev_val) = prev.as_mut() {
+                if *prev_val == node.val {
+                    *count += 1;
+                } else {
+                    *count += 1;
+                    *prev = Some(node.val);
+                }
+            } else {
+                *prev = Some(node.val);
+                *count = 1;
+            }
+            f(node.val, *count);
+            inorder(&node.right, prev, count, f);
+        }
+    }
+}
+pub fn find_mode(root: TreeLink) -> Vec<i32> {
+    let mut max = 0;
+    let mut count = 0;
+    let mut prev: Option<i32> = None;
+    let mut modes: Vec<i32> = vec![];
+    root.inorder(&mut prev, &mut count, &mut |_, count| {
+        max = usize::max(count, max);
+    });
+    prev = None;
+    count = 0;
+    root.inorder(&mut prev, &mut count, &mut |val, count| {
+        if count == max {
+            modes.push(val);
+        }
+    });
+    modes
+}
 ////////////////
 fn main() {
     let x = tree!(1, None, tree!(2, tree!(3), None));
