@@ -577,6 +577,48 @@ impl Diameter for TreeLink {
 pub fn diameter_of_binary_tree(root: TreeLink) -> i32 {
     root.diameter()
 }
+/*
+Binary Tree Tilt
+Given the root of a binary tree, return the sum of every tree node's tilt.
+
+The tilt of a tree node is the absolute difference between the sum of all left subtree node values and all right subtree node values. If a node does not have a left child, then the sum of the left subtree node values is treated as 0. The rule is similar if there the node does not have a right child.
+
+ 
+
+Example 1:
+
+
+Input: root = [1,2,3]
+Output: 1
+Explanation: 
+Tilt of node 2 : |0-0| = 0 (no children)
+Tilt of node 3 : |0-0| = 0 (no children)
+Tile of node 1 : |2-3| = 1 (left subtree is just left child, so sum is 2; right subtree is just right child, so sum is 3)
+Sum of every tilt : 0 + 0 + 1 = 1
+*/
+pub trait Tilt {
+    fn find_tilt(&self, tilt: &mut i32) -> i32;
+}
+impl Tilt for TreeLink {
+    fn find_tilt(&self, tilt: &mut i32) -> i32 {
+        if let Some(node) = self {
+            let node = node.borrow();
+            let left = &node.left;
+            let right = &node.right;
+            let left_sum = left.find_tilt(tilt);
+            let right_sum = right.find_tilt(tilt);
+            *tilt += (left_sum - right_sum).abs();
+            node.val + left_sum + right_sum
+        } else {
+            0
+        }
+    }
+}
+pub fn find_tilt(root: TreeLink) -> i32 {
+    let mut tilt = 0;
+    root.find_tilt(&mut tilt);
+    tilt
+}
 ////////////////
 fn main() {
     let x = tree!(1, None, tree!(2, tree!(3), None));
