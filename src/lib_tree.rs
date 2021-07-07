@@ -539,6 +539,44 @@ pub fn get_minimum_difference(root: TreeLink) -> i32 {
     root.inorder(&mut prev, &mut min);
     min
 }
+/*
+Diameter of Binary Tree
+Given a binary tree, you need to compute the length of the diameter of the tree. The diameter of a binary tree is the length of the longest path between any two nodes in a tree. This path may or may not pass through the root.
+
+Example:
+Given a binary tree
+          1
+         / \
+        2   3
+       / \     
+      4   5    
+Return 3, which is the length of the path [4,2,1,3] or [5,2,1,3].
+*/
+pub trait Diameter {
+    fn diameter(&self) -> i32;
+    fn max_depth(&self, max: &mut i32) -> i32;
+}
+impl Diameter for TreeLink {
+    fn diameter(&self) -> i32 {
+        let mut max: i32 = 0;
+        self.max_depth(&mut max);
+        max
+    }
+    fn max_depth(&self, max: &mut i32) -> i32 {
+        if let Some(node) = self {
+            let node = node.borrow();
+            let left = node.left.max_depth(max);
+            let right = node.right.max_depth(max);
+            *max = (*max).max(left + right);
+            (left + 1).max(right + 1)
+        } else {
+            0
+        }
+    }
+}
+pub fn diameter_of_binary_tree(root: TreeLink) -> i32 {
+    root.diameter()
+}
 ////////////////
 fn main() {
     let x = tree!(1, None, tree!(2, tree!(3), None));
