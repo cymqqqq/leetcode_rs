@@ -581,6 +581,22 @@ pub fn reverse_str(s: String, k: i32) -> String {
     }
     s.iter().collect()
 }
+/*
+Reverse Words in a String III
+Given a string, you need to reverse the order of characters in each word within a sentence while still preserving whitespace and initial word order.
+
+Example 1:
+Input: "Let's take LeetCode contest"
+Output: "s'teL ekat edoCteeL tsetnoc"
+*/
+pub fn reverse_words(s: String) -> String {
+    let words: Vec<String> = s
+    .split_whitespace()
+    .map(|s| s.chars().rev().collect())
+    .collect();
+    let res: String = words.join(" ");
+    res
+}
 /////////////
 fn main() {
     let words: Vec<String> = vec!["practice", "makes", "perfect", "coding", "makes"];
