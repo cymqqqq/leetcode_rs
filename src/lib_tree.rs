@@ -619,6 +619,42 @@ pub fn find_tilt(root: TreeLink) -> i32 {
     root.find_tilt(&mut tilt);
     tilt
 }
+/*
+Subtree of Another Tree
+Given two non-empty binary trees s and t, check whether tree t has exactly the same structure and node values with a subtree of s. A subtree of s is a tree consists of a node in s and all of this node's descendants. The tree s could also be considered as a subtree of itself.
+
+Example 1:
+Given tree s:
+
+     3
+    / \
+   4   5
+  / \
+ 1   2
+Given tree t:
+   4 
+  / \
+ 1   2
+Return true, because t has the same structure and node values with a subtree of s.
+
+*/
+pub trait Subtree {
+    fn is_subtree(&self, t: &TreeLink) -> bool;
+}
+impl Subtree for TreeLink {
+    fn is_subtree(&self, t: &TreeLink) -> bool {
+        if self == t { return true; }
+        if let Some(node) = self {
+            let left = &node.borrow().left;
+            let right = &node.borrow().right;
+            return left.is_subtree(t) || right.is_subtree(t);
+        }
+        false;
+    }
+}
+pub fn is_subtree(s: TreeLink, t: TreeLink) -> bool {
+    s.is_subtree(t)
+}
 ////////////////
 fn main() {
     let x = tree!(1, None, tree!(2, tree!(3), None));
