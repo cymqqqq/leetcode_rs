@@ -655,6 +655,54 @@ impl Subtree for TreeLink {
 pub fn is_subtree(s: TreeLink, t: TreeLink) -> bool {
     s.is_subtree(t)
 }
+/*
+Construct String from Binary Tree
+You need to construct a string consists of parenthesis and integers from a binary tree with the preorder traversing way.
+
+The null node needs to be represented by empty parenthesis pair "()". And you need to omit all the empty parenthesis pairs that don't affect the one-to-one mapping relationship between the string and the original binary tree.
+
+Example 1:
+Input: Binary tree: [1,2,3,4]
+       1
+     /   \
+    2     3
+   /    
+  4     
+
+Output: "1(2(4))(3)"
+
+Explanation: Originallay it needs to be "1(2(4)())(3()())", 
+but you need to omit all the unnecessary empty parenthesis pairs. 
+And it will be "1(2(4))(3)".
+*/
+pub trait Treetostring {
+    fn tree_to_string(&self) -> String;
+}
+impl Treetostring for TreeLink {
+    fn tree_to_string(&self) -> String {
+        if let Some(node) = self {
+            let mut node = node.borrow_mut();
+            let left = node.left.take();
+            let right = node.right.take();
+            match (&left, &right) {
+                (Some(_), Some(_)) => format!(
+                "{}({})({})",
+                node.val,
+                left.tree_to_string(),
+                right.tree_to_string(),
+                ),
+                (Some(_), None) => format!("{}({})", node.val, left.tree_to_string()),
+                (None, Some(_)) => format!("{}()({})", node.val, right.tree_to_string()),
+                (None, None) => format!("{}", node.val),
+            }
+        } else {
+            "".to_string()
+        }
+    }
+}
+pub fn treetostring(root: TreeLink) -> String {
+    root.tree_to_string()
+}
 ////////////////
 fn main() {
     let x = tree!(1, None, tree!(2, tree!(3), None));
