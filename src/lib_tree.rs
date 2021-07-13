@@ -741,6 +741,49 @@ pub fn merge_trees(t1: TreeLink, t2: TreeLink) -> TreeLink {
         (None, None) => None,
     }
 }
+/*
+Average of Levels in Binary Tree
+Given a non-empty binary tree, return the average value of the nodes on each level in the form of an array.
+Example 1:
+Input:
+    3
+   / \
+  9  20
+    /  \
+   15   7
+Output: [3, 14.5, 11]
+Explanation:
+The average value of nodes on level 0 is 3,  on level 1 is 14.5, and on level 2 is 11. Hence return [3, 14.5, 11].
+
+*/
+pub trait Preorder {
+    fn preorder(&self, level: usize, levels: &mut Vec<Vec<i32>>);
+}
+impl Preorder for TreeLink {
+    fn preorder(&self, level: usize, levels: &mut Vec<Vec<i32>>) {
+        if let Some(node) = self {
+            let node = node.borrow();
+            let left = &node.left;
+            let right = &node.right;
+            if levels.len() == level {
+                levels.push(vec![node.val]);
+            } else {
+                levels[level].push(node.val);
+            }
+            left.preorder(level + 1, levels);
+            right.preorder(level + 1, levels);
+        }
+    }
+}
+pub fn average_node(root: TreeLink) -> Vec<f64> {
+    let mut levels: Vec<Vec<i32>> = vec![];
+    root.preorder(0, &mut levels);
+    levels.
+    iter()
+    .map(|c| c.iter().map(|&x| x as f64).sum::<f64>() as f64)
+    .collect()
+}
+
 ////////////////
 fn main() {
     let x = tree!(1, None, tree!(2, tree!(3), None));
