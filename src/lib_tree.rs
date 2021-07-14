@@ -783,7 +783,66 @@ pub fn average_node(root: TreeLink) -> Vec<f64> {
     .map(|c| c.iter().map(|&x| x as f64).sum::<f64>() as f64)
     .collect()
 }
+/*
+Two Sum IV - Input is a BST
+Given the root of a Binary Search Tree and a target number k, return true if there exist two elements in the BST such that their sum is equal to the given target.
 
+ 
+
+Example 1:
+
+
+Input: root = [5,3,6,2,4,null,7], k = 9
+Output: true
+Example 2:
+
+
+Input: root = [5,3,6,2,4,null,7], k = 28
+Output: false
+Example 3:
+
+Input: root = [2,1,3], k = 4
+Output: true
+Example 4:
+
+Input: root = [2,1,3], k = 1
+Output: false
+*/
+use std::cmp::Ordering::*;
+pub trait Inorder {
+    fn inorder(&self, v: &mut Vec<i32>, tar: i32);
+}
+impl Inorder for TreeLink {
+    fn inorder(&self, v: &mut Vec<i32>, tar: i32) {
+        if let Some(node) = self {
+            let node = node.borrow();
+            let left = &node.left;
+            let right = &node.right;
+            inorder(left, v, tar);
+            v.push(node.val);
+            inorder(right, v, tar);
+        }
+    }
+}
+pub fn find_tar(root: TreeLink, k: i32) -> bool {
+    let mut v = vec![];
+    root.inorder(&mut v, k);
+    let n = v.len();
+    let mut l = 0;
+    let mut r = n - 1;
+    while l < r {
+        let sum = v[l] + v[r];
+        match sum.cmp(&k) {
+            Greater => {
+                r -= 1;
+            }
+            Less => {
+                l += 1;
+            }
+        }
+    }
+    false
+}
 ////////////////
 fn main() {
     let x = tree!(1, None, tree!(2, tree!(3), None));
