@@ -843,6 +843,73 @@ pub fn find_tar(root: TreeLink, k: i32) -> bool {
     }
     false
 }
+/*
+Second Minimum Node In a Binary Tree
+Given a non-empty special binary tree consisting of nodes with the non-negative value, where each node in this tree has exactly two or zero sub-node. If the node has two sub-nodes, then this node's value is the smaller value among its two sub-nodes. More formally, the property root.val = min(root.left.val, root.right.val) always holds.
+
+Given such a binary tree, you need to output the second minimum value in the set made of all the nodes' value in the whole tree.
+
+If no such second minimum value exists, output -1 instead.
+
+ 
+
+ 
+
+Example 1:
+
+
+Input: root = [2,2,5,null,null,5,7]
+Output: 5
+Explanation: The smallest value is 2, the second smallest value is 5.
+Example 2:
+
+
+Input: root = [2,2,2]
+Output: -1
+Explanation: The smallest value is 2, but there isn't any second smallest 
+*/
+pub trait Secondminimum {
+    fn find_second_min_val(&self, min: &mut Option<i32>) -> Option<i32>;
+    fn option_min(a: Option<i32>, b: Option<i32>) -> Option<i32>;
+}
+impl Secondminimum for TreeLink {
+    fn find_second_min_val(&self, min: &mut Option<i32>) -> Option<i32> {
+        if let Some(node) = self {
+            let node = node.borrow();
+            let left = &node.left;
+            let right = &node.right;
+            if min.is_none() {
+                *min = Some(node.val);
+            }
+            if min.unwrap() == node.val {
+                let min_left = find_second_min_val(&left, min);
+                let min_right = find_second_min_val(&right, min);
+                option_min(min_left, min_right)
+            } else {
+                Some(node.val)
+            }
+            
+        } else {
+            None
+        }
+    }
+    fn option_min(a: Option<i32>, b: Option<i32>) -> Option<i32> {
+        match (a, b) {
+            (Some(a), Some(b)) => Some(i32::min(a, b)),
+            (Some(a), None) => Some(a),
+            (None, Some(b)) => Some(b),
+            (None, None) => None,
+        }
+    }
+}
+pub fn find_minmum(root: TreeLink) -> i32 {
+    let mut min = None;
+    if let Some(sec_min) = root.find_second_min_val(&mut min) {
+        sec_min
+    } else {
+        -1
+    }
+}
 ////////////////
 fn main() {
     let x = tree!(1, None, tree!(2, tree!(3), None));
