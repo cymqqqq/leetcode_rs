@@ -910,6 +910,47 @@ pub fn find_minmum(root: TreeLink) -> i32 {
         -1
     }
 }
+/*
+Search in a Binary Search Tree
+You are given the root of a binary search tree (BST) and an integer val.
+
+Find the node in the BST that the node's value equals val and return the subtree rooted with that node. If such a node does not exist, return null.
+
+ 
+
+Example 1:
+
+
+Input: root = [4,2,7,1,3], val = 2
+Output: [2,1,3]
+Example 2:
+
+
+Input: root = [4,2,7,1,3], val = 5
+Output: []
+*/
+pub trait search {
+    fn find(&self, val: i32) -> TreeLink;
+}
+impl search for TreeLink {
+    fn find(&self, val: i32) -> TreeLink {
+        if let Some(node) = self {
+            let tmp = node.clone();
+            let node = node.borrow();
+            if val == node.val {
+                Some(tmp)
+            } else {
+                if val < node.val {
+                    find(&node.left, val)
+                } else {
+                    find(&node.right, val)
+                }
+            }
+        } else {
+            None
+        }
+    }
+}
 ////////////////
 fn main() {
     let x = tree!(1, None, tree!(2, tree!(3), None));
